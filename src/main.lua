@@ -63,6 +63,11 @@ local function on_ready()
         end
     end
 
+    mod.IsZag = rom.mods["NikkelM-Zagreus_Journey"] and
+                rom.mods["NikkelM-Zagreus_Journey"].config and
+                rom.mods["NikkelM-Zagreus_Journey"].config.enabled and
+                rom.mods["NikkelM-Zagreus_Journey"].IsValidInstallation
+
     import 'sjson.lua'
     import 'ready.lua'
 end

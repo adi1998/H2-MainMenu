@@ -109,7 +109,61 @@ local order = {
     "FilePath"
 }
 
-local selectedBink = math.random(0, #bink_prefixes)
+local zjModifications = {
+    ModsNikkelMHadesBiomes_MainMenuMashupLogo_Early =
+    {
+        StartScale = 0.4986,
+		EndScale = 0.5076,
+        OffsetXOffset = -30,
+        OffsetYOffset = -103,
+    },
+    ModsNikkelMHadesBiomes_MainMenuMashupX_Early =
+    {
+        StartScale = 0.4532,
+		EndScale = 0.4578,
+        OffsetXOffset = -53,
+        OffsetYOffset = -80,
+    },
+    MainMenuLogoOutline_Early =
+    {
+        StartScale = 0.61875,
+		EndScale = 0.61884,
+        OffsetXOffset = -24,
+        OffsetYOffset = -80,
+    },
+    ModsNikkelMHadesBiomes_MainMenuMashupLogo =
+    {
+        StartScale = 0.50769,
+		EndScale = 0.5077111,
+        OffsetXOffset = -130,
+        OffsetYOffset = -203,
+    },
+    ModsNikkelMHadesBiomes_MainMenuMashupX =
+    {
+        StartScale = 0.4532,
+		EndScale = 0.4578,
+        OffsetXOffset = -137,
+        OffsetYOffset = -220,
+    },
+    MainMenuLogoOutline =
+    {
+        StartScale = 0.61875,
+		EndScale = 0.61884,
+        OffsetXOffset = -112,
+        OffsetYOffset = -160,
+    }
+}
+
+local zj_base_mods = {
+    [_PLUGIN.guid .. "CrescentDaggerLoop"] = {
+        ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuMashupX",
+    },
+    [_PLUGIN.guid .. "MainMenuIn"] = {
+        ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuDelay",
+    }
+ }
+
+local selectedBink = math.random(1, #bink_prefixes)
 
 print("Selected bink", selectedBink, bink_prefixes[selectedBink])
 
@@ -129,6 +183,28 @@ sjson.hook(guiScreensVfxFile, function (data)
                 end
             end
             table.insert(data.Animations, sjson.to_object(newentry, order))
+        end
+    end
+    if mod.IsZag then
+        for _, entry in ipairs(data.Animations) do
+            if zjModifications[entry.Name] then
+                for key, value in pairs(zjModifications[entry.Name]) do
+                    if entry[key] then
+                        entry[key] = value
+                    end
+                    if entry.OffsetX and key == "OffsetXOffset" then
+                        entry.OffsetX = entry.OffsetX + value
+                    end
+                    if entry.OffsetY and key == "OffsetYOffset" then
+                        entry.OffsetY = entry.OffsetY + value
+                    end
+                end
+            end
+            if zj_base_mods[entry.Name] then
+                for key, value in pairs(zj_base_mods[entry.Name]) do
+                    entry[key] = value
+                end
+            end
         end
     end
     return data
