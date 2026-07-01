@@ -114,14 +114,14 @@ local zjModifications = {
     {
         StartScale = 0.4986,
 		EndScale = 0.5076,
-        OffsetXOffset = -30,
-        OffsetYOffset = -103,
+        OffsetXOffset = -79,
+        OffsetYOffset = -84,
     },
     ModsNikkelMHadesBiomes_MainMenuMashupX_Early =
     {
         StartScale = 0.4532,
 		EndScale = 0.4578,
-        OffsetXOffset = -53,
+        OffsetXOffset = -54,
         OffsetYOffset = -80,
     },
     MainMenuLogoOutline_Early =
