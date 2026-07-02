@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "zerp"
 name = "MainMenuRestoration"
-versionNumber = "0.8.0"
+versionNumber = "1.0.0"
 description = "Hades II mod allowing you to restore the Main Menu to one of the Early Access ones."
 websiteUrl = "https://github.com/adi1998/H2-MainMenu"
 containsNsfwContent = false
