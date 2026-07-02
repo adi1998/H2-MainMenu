@@ -1,8 +1,8 @@
 ## Main Menu Restoration
 
-Hades II mod allowing you to restore the Main Menu to one of the Early Access ones.
+Hades II mod allowing you to restore the main menu background to one of the Early Access ones.
 
-Be default its configured to use a random background out of these 4
+By default its configured to use a random background out of these 4
 - Prometheus (Olympus Update)
 - Ares (Warsong Update)
 - Skelly (Unseen Update)
