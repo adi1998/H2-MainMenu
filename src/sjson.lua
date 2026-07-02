@@ -1,7 +1,7 @@
 local bink_prefixes = {
-    "zpMMAres",
-    "zpMMProm",
-    "zpMMSkel"
+    ares = "zpMMAres",
+    prometheus = "zpMMProm",
+    skelly = "zpMMSkel"
 }
 
 local guiScreensVfxFile = rom.path.combine(rom.paths.Content, "Game\\Animations\\GUI_Screens_VFX.sjson")
@@ -161,21 +161,39 @@ local zj_base_mods = {
     [_PLUGIN.guid .. "MainMenuIn"] = {
         ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuDelay",
     }
- }
+}
 
 local selectedBink = math.random(1, #bink_prefixes)
 
-print("Selected bink", selectedBink, bink_prefixes[selectedBink])
+local selectedScreen = config.screen
+if not bink_prefixes[selectedScreen] then
+    selectedScreen = "base"
+end
+
+if config.random then
+    local valid_screens = {}
+    for key, value in pairs(config.random_allowed) do
+        if value then table.insert(valid_screens, key) end
+    end
+    if not next(valid_screens) then
+        table.insert(valid_screens, "base")
+    end
+    selectedScreen = valid_screens[math.random(#valid_screens)]
+end
+
+local selectedBink = bink_prefixes[selectedScreen]
+
+print("Selected screen", selectedScreen, selectedBink)
 
 sjson.hook(guiScreensVfxFile, function (data)
-    if selectedBink ~= 0 then
+    if selectedBink then
         for _, entry in ipairs(newMenuAnimations) do
             local newentry = game.DeepCopyTable(entry)
             if newentry.VideoTexture then
-                if bink_prefixes[selectedBink] ~= "zpMMSkel" then
-                    newentry.VideoTexture = bink_prefixes[selectedBink] .. newentry.VideoTexture
+                if selectedBink ~= "zpMMSkel" then
+                    newentry.VideoTexture = selectedBink .. newentry.VideoTexture
                 else
-                    newentry.VideoTexture = bink_prefixes[selectedBink]
+                    newentry.VideoTexture = selectedBink
                     if newentry.Name == _PLUGIN.guid .. "MainMenuLoop" then
                         newentry.StartFrame = 91
                         newentry.NumFrames = 90
@@ -184,25 +202,25 @@ sjson.hook(guiScreensVfxFile, function (data)
             end
             table.insert(data.Animations, sjson.to_object(newentry, order))
         end
-    end
-    if mod.IsZag then
-        for _, entry in ipairs(data.Animations) do
-            if zjModifications[entry.Name] then
-                for key, value in pairs(zjModifications[entry.Name]) do
-                    if entry[key] then
-                        entry[key] = value
-                    end
-                    if entry.OffsetX and key == "OffsetXOffset" then
-                        entry.OffsetX = entry.OffsetX + value
-                    end
-                    if entry.OffsetY and key == "OffsetYOffset" then
-                        entry.OffsetY = entry.OffsetY + value
+        if mod.IsZag then
+            for _, entry in ipairs(data.Animations) do
+                if zjModifications[entry.Name] then
+                    for key, value in pairs(zjModifications[entry.Name]) do
+                        if entry[key] then
+                            entry[key] = value
+                        end
+                        if entry.OffsetX and key == "OffsetXOffset" then
+                            entry.OffsetX = entry.OffsetX + value
+                        end
+                        if entry.OffsetY and key == "OffsetYOffset" then
+                            entry.OffsetY = entry.OffsetY + value
+                        end
                     end
                 end
-            end
-            if zj_base_mods[entry.Name] then
-                for key, value in pairs(zj_base_mods[entry.Name]) do
-                    entry[key] = value
+                if zj_base_mods[entry.Name] then
+                    for key, value in pairs(zj_base_mods[entry.Name]) do
+                        entry[key] = value
+                    end
                 end
             end
         end
@@ -213,9 +231,9 @@ end)
 local mainMenuScreenFile = rom.path.combine(rom.paths.Content, "Game\\GUI\\MainMenuScreen.sjson")
 
 sjson.hook(mainMenuScreenFile, function (data)
-    if selectedBink ~= 0 then
+    if selectedBink then
         data.MainMenuScreen.AnimatedBackground.Graphic = _PLUGIN.guid .. data.MainMenuScreen.AnimatedBackground.Graphic
-        data.MainMenuScreen.PlayGameButton.X = 452
+        data.MainMenuScreen.PlayGameButton.X = 457
         data.MainMenuScreen.PlayGameButton.Y = 575
     end
     return data
