@@ -163,8 +163,6 @@ local zj_base_mods = {
     }
 }
 
-local selectedBink = math.random(1, #bink_prefixes)
-
 local selectedScreen = config.screen
 if not bink_prefixes[selectedScreen] then
     selectedScreen = "base"
@@ -225,13 +223,16 @@ sjson.hook(guiScreensVfxFile, function (data)
             end
         end
     end
+    config.sjson_selected_cache = selectedBink or "null"
+    print("caching selectedBink in sjson_selected_cache", config.sjson_selected_cache)
     return data
 end)
 
 local mainMenuScreenFile = rom.path.combine(rom.paths.Content, "Game\\GUI\\MainMenuScreen.sjson")
 
 sjson.hook(mainMenuScreenFile, function (data)
-    if selectedBink then
+    print("main menu screen sjson hook called", config.sjson_selected_cache, selectedBink)
+    if config.sjson_selected_cache ~= "null" then
         data.MainMenuScreen.AnimatedBackground.Graphic = _PLUGIN.guid .. data.MainMenuScreen.AnimatedBackground.Graphic
         data.MainMenuScreen.PlayGameButton.X = 457
         data.MainMenuScreen.PlayGameButton.Y = 575
