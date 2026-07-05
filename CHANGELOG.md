@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- fix ZJ misalignment in some cases
+
 ## [1.0.0] - 2026-07-02
 
 - First version of the mod!
