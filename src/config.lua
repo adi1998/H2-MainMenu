@@ -1,4 +1,18 @@
-local config = {
+local screen_values = {
+  "base",
+  "ares",
+  "prometheus",
+  "skelly",
+}
+
+local screen_labels = {
+  "Default",
+  "Ares",
+  "Prometheus",
+  "Skelly",
+}
+
+local configDefault = {
   enabled = true;
   screen = "ares";
   random = true;
@@ -12,10 +26,40 @@ local config = {
 }
 
 local configDesc = {
-  screen = "Main menu screen to show if random screen is off. Valid values: base, ares, prometheus, skelly",
-  random = "Show a random main menu on each start",
-  random_allowed = "Block any screen from random selection by setting it to false";
-  sjson_selected_cache = "Do not touch"
+  screen = {
+    description = "Main menu screen shown if random screen is off. Restart game for the changes to take effect.",
+    values = screen_values,
+    labels = screen_labels,
+    onChanged = function ()
+      config.random = false
+    end
+  },
+  random = {
+    description = "Show a random main menu on each start",
+  },
+  random_allowed = {
+    description = "Block any screen from random selection by setting it to false";
+    base = {
+      displayName = "Default",
+      description = "The default main menu screen",
+    },
+    skelly = {
+      displayName = "Skelly",
+      description = "The Unseen Update main menu screen",
+    },
+    prometheus = {
+      displayName = "Prometheus",
+      description = "The Olympus Update main menu screen",
+    },
+    ares = {
+      displayName = "Ares",
+      description = "The Warsong Update main menu screen",
+    }
+  },
+  sjson_selected_cache = {
+    description = "Do not touch",
+    hidden = true,
+  }
 }
 
-return config, configDesc
+return configDefault, configDesc
