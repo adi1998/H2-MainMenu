@@ -2,8 +2,11 @@
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-08-24
+
 - Fix the 1 frame jiggle when ZJ is installed
 - Fix ZJ logo being unaligned on non 16:9 aspect ratios
+- mod_settings support
 
 ## [1.0.1] - 2026-07-05
 
@@ -13,6 +16,7 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/H2-MainMenu/compare/1.0.1...HEAD
+[unreleased]: https://github.com/adi1998/H2-MainMenu/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/adi1998/H2-MainMenu/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/adi1998/H2-MainMenu/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/adi1998/H2-MainMenu/compare/765b1b6898e36451d8870228d738032a4f3b6227...1.0.0
