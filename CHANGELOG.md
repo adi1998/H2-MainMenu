@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix the 1 frame jiggle when ZJ is installed
+- Fix ZJ logo being unaligned on non 16:9 aspect ratios
+
 ## [1.0.1] - 2026-07-05
 
 - fix ZJ misalignment in some cases
