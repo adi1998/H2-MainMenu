@@ -113,53 +113,81 @@ local zjModifications = {
     ModsNikkelMHadesBiomes_MainMenuMashupLogo_Early =
     {
         StartScale = 0.4986,
-		EndScale = 0.5076,
-        OffsetXOffset = -79,
-        OffsetYOffset = -84,
+		EndScale = 0.50,
+        OffsetXOffset = -137,
+        OffsetYOffset = -220,
+        -- TODO: from upstream ZJ, remove when 2.0 launches
+        OffsetX = 250,
+		OffsetY = -370,
+		Duration = 2.2,
+        EaseIn = -7.25333,
     },
     ModsNikkelMHadesBiomes_MainMenuMashupX_Early =
     {
         StartScale = 0.4532,
-		EndScale = 0.4578,
-        OffsetXOffset = -54,
-        OffsetYOffset = -80,
+		EndScale = 0.46,
+        OffsetXOffset = -137,
+        OffsetYOffset = -220,
+        -- TODO: from upstream ZJ, remove when 2.0 launches
+        OffsetX = -180,
+		OffsetY = -425,
+		Duration = 2.2,
+        EaseIn = -7.25333,
     },
     MainMenuLogoOutline_Early =
     {
         StartScale = 0.61875,
-		EndScale = 0.61884,
-        OffsetXOffset = -24,
-        OffsetYOffset = -78,
+		EndScale = 0.62,
+        OffsetXOffset = -112,
+        OffsetYOffset = -160,
+        -- TODO: from upstream ZJ, remove when 2.0 launches
+        OffsetX = -708,
+		OffsetY = -326,
+		Duration = 2.2,
+        EaseIn = -7.25333,
     },
     ModsNikkelMHadesBiomes_MainMenuMashupLogo =
     {
-        StartScale = 0.50769,
-		EndScale = 0.5077111,
-        OffsetXOffset = -130,
-        OffsetYOffset = -203,
+        StartScale = 0.50,
+		EndScale = 0.50001,
+        OffsetXOffset = -137,
+        OffsetYOffset = -220,
     },
     ModsNikkelMHadesBiomes_MainMenuMashupX =
     {
-        StartScale = 0.4532,
-		EndScale = 0.4578,
+        StartScale = 0.46,
+		EndScale = 0.46001,
         OffsetXOffset = -137,
         OffsetYOffset = -220,
     },
     MainMenuLogoOutline =
     {
-        StartScale = 0.61875,
-		EndScale = 0.61884,
+        StartScale =  0.62,
+		EndScale = 0.620001,
         OffsetXOffset = -112,
         OffsetYOffset = -160,
     }
 }
 
 local zj_base_mods = {
+    [_PLUGIN.guid .. "MainMenuIn"] = {
+        ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuMashupX_Early",
+    },
     [_PLUGIN.guid .. "CrescentDaggerLoop"] = {
         ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuMashupX",
     },
-    [_PLUGIN.guid .. "MainMenuIn"] = {
-        ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuDelay",
+}
+
+local zj_vanilla_overwrite = {
+    "OffsetX",
+    "OffsetY",
+    "Duration",
+    "EaseIn",
+}
+
+local zj_vanilla_mods = {
+    ["MainMenuIn"] = {
+        ChildAnimation = "ModsNikkelMHadesBiomes_MainMenuMashupX_Early"
     }
 }
 
@@ -207,18 +235,34 @@ sjson.hook(guiScreensVfxFile, function (data)
                         if entry[key] then
                             entry[key] = value
                         end
-                        if entry.OffsetX and key == "OffsetXOffset" then
-                            entry.OffsetX = entry.OffsetX + value
-                        end
-                        if entry.OffsetY and key == "OffsetYOffset" then
-                            entry.OffsetY = entry.OffsetY + value
-                        end
+                    end
+                    if entry.OffsetX and zjModifications[entry.Name].OffsetXOffset then
+                        entry.OffsetX = entry.OffsetX + zjModifications[entry.Name].OffsetXOffset
+                    end
+                    if entry.OffsetY and zjModifications[entry.Name].OffsetYOffset then
+                        entry.OffsetY = entry.OffsetY + zjModifications[entry.Name].OffsetYOffset
                     end
                 end
                 if zj_base_mods[entry.Name] then
                     for key, value in pairs(zj_base_mods[entry.Name]) do
                         entry[key] = value
                     end
+                end
+            end
+        end
+    elseif mod.IsZag then
+        -- TODO: remove on ZJ 2.0
+        for _, entry in ipairs(data.Animations) do
+            if zjModifications[entry.Name] then
+                for key, value in pairs(zjModifications[entry.Name]) do
+                    if game.Contains(zj_vanilla_overwrite, key) then
+                        entry[key] = value
+                    end
+                end
+            end
+            if zj_vanilla_mods[entry.Name] then
+                for key, value in pairs(zj_vanilla_mods[entry.Name]) do
+                    entry[key] = value
                 end
             end
         end
