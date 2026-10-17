@@ -4,7 +4,7 @@ local bink_prefixes = {
     skelly = "zpMMSkel"
 }
 
-local guiScreensVfxFile = rom.path.combine(rom.paths.Content, "Game\\Animations\\GUI_Screens_VFX.sjson")
+local guiScreensVfxFile = rom.path.combine(rom.paths.Content(), "Game\\Animations\\GUI_Screens_VFX.sjson")
 
 local newMenuAnimations = {
     {
@@ -272,7 +272,7 @@ sjson.hook(guiScreensVfxFile, function (data)
     return data
 end)
 
-local mainMenuScreenFile = rom.path.combine(rom.paths.Content, "Game\\GUI\\MainMenuScreen.sjson")
+local mainMenuScreenFile = rom.path.combine(rom.paths.Content(), "Game\\GUI\\MainMenuScreen.sjson")
 
 sjson.hook(mainMenuScreenFile, function (data)
     print("main menu screen sjson hook called", config.sjson_selected_cache, selectedBink)
